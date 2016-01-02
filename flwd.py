@@ -1,16 +1,16 @@
 import random
 import time
 import RPi.GPIO
-from Adafruit_LED_Backpack import AlphaNum4
+#from Adafruit_LED_Backpack import AlphaNum4
 
-# Create display instance on default I2C address (0x70) and bus number.
-display = AlphaNum4.AlphaNum4()
+## Create display instance on default I2C address (0x70) and bus number.
+#display = AlphaNum4.AlphaNum4()
 
-# Alternatively, create a display with a specific I2C address and/or bus.
-# display = AlphaNum4.AlphaNum4(address=0x74, busnum=1)
+## Alternatively, create a display with a specific I2C address and/or bus.
+## display = AlphaNum4.AlphaNum4(address=0x74, busnum=1)
 
-# Init the display. Must be called once before using the display.
-display.begin()
+## Init the display. Must be called once before using the display.
+#display.begin()
 
 offense_level = 0
 cleaner_button = 0
@@ -48,6 +48,7 @@ def get_offensive_word():
     return word
 
 def get_clean_word():
+    word = "*"
     while word.endswith("*"):
         word = random.choice(words)
     return word
@@ -58,12 +59,12 @@ def get_next_word():
 
     # 0 = totally clean
     if offense_level == 0:
-        get_clean_word()
+       word = get_clean_word()
 
     #TODO
     # 1 = biased toward clean
     if offense_level == 1:
-        get_clean_word()
+        word = get_clean_word()
 
     # 2 = equally random
     if offense_level == 2:
@@ -81,10 +82,13 @@ def get_next_word():
     # Put first 4 letters of word into word. (Removes trailing * of offensive words.)
     word = word[:4]
 
+    return word
+
 def display_word(word):
-    display.clear()
-    display.print_str(word)
-    display.write_display()
+#    display.clear()
+#    display.print_str(word)
+#    display.write_display()
+    print(word)
 
 words = ["AAHS",
 'AALS',
@@ -5719,13 +5723,11 @@ offense_level = 0
 setup_GPIO()
 
 #Start while loop
-get_next_word()
+word = get_next_word()
 
 update_offense_level_from_switches()
 
-print (word)
-
-display(word)
+display_word(word)
 
 time.sleep(1)
 
