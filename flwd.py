@@ -5748,6 +5748,11 @@ setup_GPIO()
 while True:
     word = get_next_word()
     word = update_offense_level_from_switches(word, offense_level)
+    if word.startswith(" "):
+        aword = word[3:]
+        print (aword)
+        offense_level = int(aword)
+
     display_word(word)
     time.sleep(1)
 
