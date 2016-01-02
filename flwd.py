@@ -51,6 +51,7 @@ def print_throwing_away (word):
     print ("Throwing away: " + word)
 
 def get_offensive_word():
+    word = "okok"
     while not word.endswith("*"):
         word = random.choice(words)
     return word
@@ -5727,7 +5728,7 @@ words = ["AAHS",
 'ZZZS']
 
 #z
-offense_level = 0
+offense_level = 4
 setup_GPIO()
 
 #Start while loop
