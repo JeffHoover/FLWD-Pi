@@ -1,0 +1,15 @@
+http://www.scrabble.org.au/words/fours_csw15.htm
+
+<-- 5526 words exported from zyzzyva CSW12--> words from CSW12, with the additional CS15 words from WESPA initiation kit.
+ASPA
+Australian Scrabble® Players Association (ASPA)
+© Copyright 2001-15	www.scrabble.org.au   info@scrabble.org.au	Last Updated: 21 June 2015
+
+If a word is in this list and in the ASPA list above, I mark it with *
+http://www.noswearing.com/fourletterwords.php
+
+
+Pick a random line from the list_cuss.txt file.
+Read the line
+If the read length is 5 characters, it is a swear.
+
