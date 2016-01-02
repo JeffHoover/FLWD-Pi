@@ -1,6 +1,16 @@
 import random
 import time
 import RPi.GPIO
+
+import signal
+
+def signal_handler(signal, frame):
+        print('\nCleaning up GPIO and exiting.')
+        RPi.GPIO.cleanup();
+        sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
+
 #from Adafruit_LED_Backpack import AlphaNum4
 import sys
 
@@ -26,21 +36,25 @@ dirtier_button = 0
 word = "init"
 
 #z
-def update_offense_level_from_switches():
+def update_offense_level_from_switches(word, offense_level):
     if RPi.GPIO.input(2) == RPi.GPIO.LOW:
+        print("2 low")
         if offense_level  > 0:
             offense_level -= 1
-        word = "   " + offense_level
+        word = "   " + str(offense_level)
 
     if RPi.GPIO.input(3) == RPi.GPIO.LOW:
+        print("3 low")
         if offense_level < 4:    
             offense_level += 1
-        word = "   " + offense_level
+        word = "   " + str(offense_level)
 
     #RESET TO TOTALLY CLEAN LEVEL by holding both buttons
     if RPi.GPIO.input(2) == RPi.GPIO.LOW and RPi.GPIO.input(3) == RPi.GPIO.LOW:
         offense_level = 0
-        word = "   " + offense_level
+        word = "   " + str(offense_level)
+
+    return word
 
 def setup_GPIO():
     RPi.GPIO.setmode(RPi.GPIO.BCM)
@@ -5728,20 +5742,15 @@ words = ["AAHS",
 'ZZZS']
 
 #z
-offense_level = 4
+offense_level = 2
 setup_GPIO()
 
-#Start while loop
-word = get_next_word()
-
-update_offense_level_from_switches()
-
-display_word(word)
-
-time.sleep(1)
-
-#End while loop
+while True:
+    word = get_next_word()
+    word = update_offense_level_from_switches(word, offense_level)
+    display_word(word)
+    time.sleep(1)
 
 #do this after ctrl-c
-RPi.GPIO.cleanup();
+#RPi.GPIO.cleanup();
 
