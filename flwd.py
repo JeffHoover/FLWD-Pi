@@ -58,13 +58,12 @@ def get_next_word():
 
     # 0 = totally clean
     if offense_level == 0:
-        while word.endswith("*"):
-            original_choice = word
-            word = random.choice(words)
-            print ("Throwing away: " + original_choice)
+        get_clean_word()
 
     #TODO
     # 1 = biased toward clean
+    if offense_level == 1:
+        get_clean_word()
 
     # 2 = equally random
     if offense_level == 2:
@@ -72,6 +71,8 @@ def get_next_word():
 
     # TODO
     # 3 = biased toward dirty
+    if offense_level == 3:
+        word = random.choice(words)
 
     # 4 = only dirty
     if offense_level == 4:
