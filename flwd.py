@@ -2,6 +2,14 @@ import random
 import time
 import RPi.GPIO
 #from Adafruit_LED_Backpack import AlphaNum4
+import sys
+
+sys.stderr = open('stderr.txt', 'w')
+# assigning stderr above captures these annoying (but ignorable) errors:
+#flwd.py:42: RuntimeWarning: A physical pull up resistor is fitted on this channel!
+#  RPi.GPIO.setup(2, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+#flwd.py:43: RuntimeWarning: A physical pull up resistor is fitted on this channel!
+#  RPi.GPIO.setup(3, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
 
 ## Create display instance on default I2C address (0x70) and bus number.
 #display = AlphaNum4.AlphaNum4()
