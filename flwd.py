@@ -5740,9 +5740,37 @@ words = ["AAHS",
 'ZYME',
 'ZZZS']
 
+startup_message = [
+"FOUR",
+"LET-",
+"TER ",
+"WORD",
+" BY ",
+"JEFF",
+"HOO-",
+"VER.",
+"AF- ",
+"TER ",
+"RAY-",
+"MOND",
+"WEIS",
+"LING",
+"—>"]
+
+def display_startup_message():
+    for start_word in startup_message:
+        RPi.GPIO.output(4, RPi.GPIO.HIGH)
+        display_word(start_word)
+        time.sleep(0.4)
+        RPi.GPIO.output(4, RPi.GPIO.LOW)
+        time.sleep(0.4)
+
+
 #z
 offense_level = 2
 setup_GPIO()
+
+display_startup_message()
 
 while True:
     word = get_next_word()
