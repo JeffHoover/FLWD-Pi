@@ -5755,7 +5755,8 @@ def display_startup_message():
 offense_level = 2
 setup_GPIO()
 
-display_startup_message()
+if len(sys.argv) == 1:
+    display_startup_message()
 
 while True:
     word = get_word_based_on_offense_level(offense_level)
