@@ -38,13 +38,11 @@ word = "init"
 #z
 def update_offense_level_from_switches(word, offense_level):
     if RPi.GPIO.input(2) == RPi.GPIO.LOW:
-        print("2 low")
         if offense_level  > 0:
             offense_level -= 1
         word = "   " + str(offense_level)
 
     if RPi.GPIO.input(3) == RPi.GPIO.LOW:
-        print("3 low")
         if offense_level < 4:    
             offense_level += 1
         word = "   " + str(offense_level)
@@ -5750,9 +5748,8 @@ while True:
     word = get_next_word()
     word = update_offense_level_from_switches(word, offense_level)
     if word.startswith(" "):
-        aword = word[3:]
-        print (aword)
-        offense_level = int(aword)
+        new_offense_level = word[3:]
+        offense_level = int(new_offense_level)
 
     display_word(word)
 
