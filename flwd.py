@@ -60,6 +60,7 @@ def setup_GPIO():
     RPi.GPIO.setmode(RPi.GPIO.BCM)
     RPi.GPIO.setup(2, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
     RPi.GPIO.setup(3, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+    RPi.GPIO.setup(4, RPi.GPIO.OUT)
 
 def print_throwing_away (word):
     print ("Throwing away: " + word)
@@ -5754,8 +5755,10 @@ while True:
         offense_level = int(aword)
 
     display_word(word)
-    time.sleep(1)
 
-#do this after ctrl-c
-#RPi.GPIO.cleanup();
+    RPi.GPIO.output(4, RPi.GPIO.HIGH)
+    time.sleep(0.5)
+    RPi.GPIO.output(4, RPi.GPIO.LOW)
+    time.sleep(0.5)
+
 
