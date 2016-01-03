@@ -75,36 +75,21 @@ def get_clean_word():
         word = random.choice(words)
     return word
 
-
-def get_next_word():
+def get_random_word():
     word = random.choice(words)
-
-    # 0 = totally clean
-    if offense_level == 0:
-       word = get_clean_word()
-
-    #TODO
-    # 1 = biased toward clean
-    if offense_level == 1:
-        word = get_clean_word()
-
-    # 2 = equally random
-    if offense_level == 2:
-        word = random.choice(words)
-
-    # TODO
-    # 3 = biased toward dirty
-    if offense_level == 3:
-        word = random.choice(words)
-
-    # 4 = only dirty
-    if offense_level == 4:
-        word = get_offensive_word()
-
-    # Put first 4 letters of word into word. (Removes trailing * of offensive words.)
-    word = word[:4]
-
     return word
+
+def get_word_based_on_offense_level(offense_level):
+    function_chooser = {
+        0: get_clean_word(),    # totally clean
+        1: get_clean_word(),    # TODO - biased toward clean
+        2: get_random_word(),   # equally random
+        3: get_random_word(),   # TODO - biased toward dirty
+        4: get_offensive_word() # only dirty
+    }
+    get_word = function_chooser.get(offense_level, lambda:get_clean_word())
+    return get_word
+
 
 def display_word(word):
 #    display.clear()
@@ -5773,7 +5758,7 @@ setup_GPIO()
 display_startup_message()
 
 while True:
-    word = get_next_word()
+    word = get_word_based_on_offense_level(offense_level)
     word = update_offense_level_from_switches(word, offense_level)
     if word.startswith(" "):
         new_offense_level = word[3:]
