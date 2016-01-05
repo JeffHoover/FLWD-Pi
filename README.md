@@ -35,3 +35,9 @@ Pi-related things I've had to learn for this project:
 - ssh'ing into the Pi via wifi
 - Transferring files between Mac and Pi (via rsync)
 
+
+Backlog items that may require more learning
+-----------
+- Moving logic of of Pi and onto SaaS
+- Mobile app to provide real-time control
+- 
