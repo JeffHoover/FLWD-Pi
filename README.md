@@ -25,14 +25,14 @@ https://www.adafruit.com/datasheets/CID2379.pdf
 
 Pi-related things I've had to learn for this project:
 -----------
-Driving an LED
-Reading hardware switches
-Trapping ctrl-c to shut down GPIO politely as program ends.
-Python
-Breaking python into multiple files (via import)
-Dictionary mapping for functions - use this strategy to replace multiple if()s and the absence of a switch command.
-Make a python program launch on Pi power-up (via crontab)
-Python program command-line args
-ssh'ing into the Pi via wifi
-Transferring files between Mac and Pi (via rsync)
+- Driving an LED
+- Reading hardware switches
+- Trapping ctrl-c to shut down GPIO politely as program ends.
+- Python
+- Breaking python into multiple files (via import)
+- Dictionary mapping for functions - use this strategy to replace multiple if()s and the absence of a switch command.
+- Make a python program launch on Pi power-up (via crontab)
+- Python program command-line args
+- ssh'ing into the Pi via wifi
+- Transferring files between Mac and Pi (via rsync)
 
