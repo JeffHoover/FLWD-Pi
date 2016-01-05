@@ -1,0 +1,9 @@
+The code for all the the 4 letters backback is at:
+
+/home/pi/projects/Adafruit_Python_LED_Backpack
+
+https://learn.adafruit.com/adafruit-led-backpack/0-54-alphanumeric
+https://learn.adafruit.com/led-backpack-displays-on-raspberry-pi-and-beaglebone-black/usage
+https://learn.adafruit.com/adafruit-led-backpack/changing-i2c-address
+
+
