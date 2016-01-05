@@ -1,7 +1,7 @@
-The code for all the the 4 letters backback is at:
+Some links regarding the backback:
 
-/home/pi/projects/Adafruit_Python_LED_Backpack
-
+https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/overview
+https://forums.adafruit.com/viewtopic.php?f=50&t=83885&p=423018&hilit=backpack+alphanumeric+54#p423018
 https://learn.adafruit.com/adafruit-led-backpack/0-54-alphanumeric
 https://learn.adafruit.com/led-backpack-displays-on-raspberry-pi-and-beaglebone-black/usage
 https://learn.adafruit.com/adafruit-led-backpack/changing-i2c-address
