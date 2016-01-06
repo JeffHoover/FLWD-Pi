@@ -3,12 +3,14 @@ import time
 import RPi.GPIO
 import words
 import signal
+import os
 
 def signal_handler(signal, frame):
         print('\nCleaning up GPIO and exiting.')
         display.clear()
         display.write_display()
         RPi.GPIO.cleanup();
+        os.system('echo 1 | sudo tee /sys/class/leds/led1/brightness')
         sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -24,9 +26,6 @@ sys.stderr = open('stderr.txt', 'w')
 ## Create display instance on default I2C address (0x70) and bus number.
 display = AlphaNum4.AlphaNum4()
 
-## Alternatively, create a display with a specific I2C address and/or bus.
-## display = AlphaNum4.AlphaNum4(address=0x74, busnum=1)
-
 ## Init the display. Must be called once before using the display.
 display.begin()
 display.clear()
@@ -35,10 +34,11 @@ offense_level = 0
 cleaner_button = 0
 dirtier_button = 0 
 word = "init"
+SWITCH_GPIO_PIN = 12
 
 def update_offense_level_from_switch(word, offense_level):
 
-    if RPi.GPIO.input(12) == RPi.GPIO.LOW:
+    if RPi.GPIO.input(SWITCH_GPIO_PIN) == RPi.GPIO.LOW:
         if offense_level <= 4:    
             offense_level += 1
         word = "   " + str(offense_level)
@@ -46,8 +46,9 @@ def update_offense_level_from_switch(word, offense_level):
 
 def setup_GPIO():
     RPi.GPIO.setmode(RPi.GPIO.BCM)
-    RPi.GPIO.setup(12, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
-    RPi.GPIO.setup(4, RPi.GPIO.OUT)
+    RPi.GPIO.setup(SWITCH_GPIO_PIN, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+    os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
+    os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
 def print_throwing_away (word):
     print ("Throwing away: " + word)
@@ -84,14 +85,12 @@ def display_word(word):
     display.print_str(word)
     display.write_display()
     print(word)
+    time.sleep(1)
 
 def display_startup_message():
     for start_word in words.startup_message:
-        RPi.GPIO.output(4, RPi.GPIO.HIGH)
         display_word(start_word)
-        time.sleep(0.4)
-        RPi.GPIO.output(4, RPi.GPIO.LOW)
-        time.sleep(0.4)
+        time.sleep(1)
 
 setup_GPIO()
 
@@ -109,9 +108,4 @@ while True:
             word = "   0"
 
     display_word(word)
-
-    RPi.GPIO.output(4, RPi.GPIO.HIGH)
-    time.sleep(0.5)
-    RPi.GPIO.output(4, RPi.GPIO.LOW)
-    time.sleep(0.5)
 
