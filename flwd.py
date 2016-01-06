@@ -16,10 +16,8 @@ import sys
 
 sys.stderr = open('stderr.txt', 'w')
 # assigning stderr above captures these annoying (but ignorable) errors:
-#flwd.py:42: RuntimeWarning: A physical pull up resistor is fitted on this channel!
-#  RPi.GPIO.setup(2, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
 #flwd.py:43: RuntimeWarning: A physical pull up resistor is fitted on this channel!
-#  RPi.GPIO.setup(3, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+#  RPi.GPIO.setup(6, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
 
 ## Create display instance on default I2C address (0x70) and bus number.
 #display = AlphaNum4.AlphaNum4()
@@ -35,29 +33,17 @@ cleaner_button = 0
 dirtier_button = 0 
 word = "init"
 
-#z
-def update_offense_level_from_switches(word, offense_level):
-    if RPi.GPIO.input(2) == RPi.GPIO.LOW:
-        if offense_level  > 0:
-            offense_level -= 1
-        word = "   " + str(offense_level)
+def update_offense_level_from_switch(word, offense_level):
 
-    if RPi.GPIO.input(3) == RPi.GPIO.LOW:
-        if offense_level < 4:    
+    if RPi.GPIO.input(6) == RPi.GPIO.LOW:
+        if offense_level <= 4:    
             offense_level += 1
         word = "   " + str(offense_level)
-
-    #RESET TO TOTALLY CLEAN LEVEL by holding both buttons
-    if RPi.GPIO.input(2) == RPi.GPIO.LOW and RPi.GPIO.input(3) == RPi.GPIO.LOW:
-        offense_level = 0
-        word = "   " + str(offense_level)
-
     return word
 
 def setup_GPIO():
     RPi.GPIO.setmode(RPi.GPIO.BCM)
-    RPi.GPIO.setup(2, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
-    RPi.GPIO.setup(3, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+    RPi.GPIO.setup(6, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
     RPi.GPIO.setup(4, RPi.GPIO.OUT)
 
 def print_throwing_away (word):
@@ -105,9 +91,6 @@ def display_startup_message():
         RPi.GPIO.output(4, RPi.GPIO.LOW)
         time.sleep(0.4)
 
-
-#z
-offense_level = 2
 setup_GPIO()
 
 if len(sys.argv) == 1:
@@ -115,10 +98,13 @@ if len(sys.argv) == 1:
 
 while True:
     word = get_word_based_on_offense_level(offense_level)
-    word = update_offense_level_from_switches(word, offense_level)
+    word = update_offense_level_from_switch(word, offense_level)
     if word.startswith(" "):
         new_offense_level = word[3:]
         offense_level = int(new_offense_level)
+        if offense_level > 4:
+            offense_level = 0
+            word = "   0"
 
     display_word(word)
 
