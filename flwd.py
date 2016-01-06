@@ -3,12 +3,14 @@ import time
 import RPi.GPIO
 import words
 import signal
+import os
 
 def signal_handler(signal, frame):
         print('\nCleaning up GPIO and exiting.')
         display.clear()
         display.write_display()
         RPi.GPIO.cleanup();
+        os.system('echo 1 | sudo tee /sys/class/leds/led1/brightness')
         sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -45,6 +47,8 @@ def update_offense_level_from_switch(word, offense_level):
 def setup_GPIO():
     RPi.GPIO.setmode(RPi.GPIO.BCM)
     RPi.GPIO.setup(SWITCH_GPIO_PIN, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+    os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
+    os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
 def print_throwing_away (word):
     print ("Throwing away: " + word)
