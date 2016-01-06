@@ -6,12 +6,14 @@ import signal
 
 def signal_handler(signal, frame):
         print('\nCleaning up GPIO and exiting.')
+        display.clear()
+        display.write_display()
         RPi.GPIO.cleanup();
         sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
 
-#from Adafruit_LED_Backpack import AlphaNum4
+from Adafruit_LED_Backpack import AlphaNum4
 import sys
 
 sys.stderr = open('stderr.txt', 'w')
@@ -20,13 +22,14 @@ sys.stderr = open('stderr.txt', 'w')
 #  RPi.GPIO.setup(12 RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
 
 ## Create display instance on default I2C address (0x70) and bus number.
-#display = AlphaNum4.AlphaNum4()
+display = AlphaNum4.AlphaNum4()
 
 ## Alternatively, create a display with a specific I2C address and/or bus.
 ## display = AlphaNum4.AlphaNum4(address=0x74, busnum=1)
 
 ## Init the display. Must be called once before using the display.
-#display.begin()
+display.begin()
+display.clear()
 
 offense_level = 0
 cleaner_button = 0
@@ -78,9 +81,8 @@ def get_word_based_on_offense_level(offense_level):
 
 
 def display_word(word):
-#    display.clear()
-#    display.print_str(word)
-#    display.write_display()
+    display.print_str(word)
+    display.write_display()
     print(word)
 
 def display_startup_message():
@@ -112,5 +114,4 @@ while True:
     time.sleep(0.5)
     RPi.GPIO.output(4, RPi.GPIO.LOW)
     time.sleep(0.5)
-
 

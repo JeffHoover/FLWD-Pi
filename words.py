@@ -5636,11 +5636,12 @@ startup_message = [
 "JEFF",
 "HOO-",
 "VER.",
-"AF- ",
-"TER ",
+"AFT-",
+"ER  ",
 "RAY-",
 "MOND",
 "WEIS",
 "LING",
-"—>"]
+"--->",
+"    "]
 
