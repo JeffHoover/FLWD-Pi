@@ -17,7 +17,7 @@ import sys
 sys.stderr = open('stderr.txt', 'w')
 # assigning stderr above captures these annoying (but ignorable) errors:
 #flwd.py:43: RuntimeWarning: A physical pull up resistor is fitted on this channel!
-#  RPi.GPIO.setup(6, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+#  RPi.GPIO.setup(12 RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
 
 ## Create display instance on default I2C address (0x70) and bus number.
 #display = AlphaNum4.AlphaNum4()
@@ -35,7 +35,7 @@ word = "init"
 
 def update_offense_level_from_switch(word, offense_level):
 
-    if RPi.GPIO.input(6) == RPi.GPIO.LOW:
+    if RPi.GPIO.input(12) == RPi.GPIO.LOW:
         if offense_level <= 4:    
             offense_level += 1
         word = "   " + str(offense_level)
@@ -43,7 +43,7 @@ def update_offense_level_from_switch(word, offense_level):
 
 def setup_GPIO():
     RPi.GPIO.setmode(RPi.GPIO.BCM)
-    RPi.GPIO.setup(6, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+    RPi.GPIO.setup(12, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
     RPi.GPIO.setup(4, RPi.GPIO.OUT)
 
 def print_throwing_away (word):
