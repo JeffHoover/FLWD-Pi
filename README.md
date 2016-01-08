@@ -55,6 +55,20 @@ Other skills needed for someone to reproduce what I did:
 - unix commands
 - git
 
+What Things Might YOU Do with It?
+------------
+- Stream song lyrics
+- Show spelling words
+- make a list of synonym pairs
+- 
 
-
+Things I might need to make a zero work:
+-----------
+- Raspberry Pi Zero ($5)
+- NOOBS micro SD - http://www.adafruit.com/product/2767 ($12)
+- Mini HDMI to HDMI adapter https://www.adafruit.com/products/2819 ($3)
+- USB On the Go (OTG) cable https://www.adafruit.com/products/1099 ($3)
+- 40 pin header to solder on https://www.adafruit.com/products/2822 ($1) or just individual jumper wires
+- 
  
+Zero might not end up being cheap, and more work to set up so not as good for students.
