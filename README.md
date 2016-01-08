@@ -24,6 +24,11 @@ Adafruit Quad Alphanumeric Display - Red 0.54" Digits w/ I2C Backpack
 - https://learn.adafruit.com/adafruit-led-backpack/changing-i2c-address
 - https://www.adafruit.com/datasheets/CID2379.pdf
 
+Breakout Board Options
+-----------
+http://www.amazon.com/Raspberry-Extension-Breakout-Header-T-Cobbler/dp/B00NY2EBBK
+http://www.amazon.com/T-Cobbler-Breakout-Raspberry-GPIO-Cable/dp/B00JE1T1WY/
+
 Trello board for backlog:
 -----------
 https://trello.com/b/GAjtxf5i/flwd-pi
