@@ -26,6 +26,11 @@ Trello board for backlog:
 -----------
 https://trello.com/b/GAjtxf5i/flwd-pi
 
+Things I added from the original:
+-----------
+- hardware pushbutton to change mode on the fly (was dip switches)
+- portability - original is fragile and high-voltage
+
 Pi-related things I've had to learn for this project:
 -----------
 - Driving an LED
