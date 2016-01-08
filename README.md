@@ -33,7 +33,7 @@ Trello board for backlog:
 -----------
 https://trello.com/b/GAjtxf5i/flwd-pi
 
-Things I added from the original:
+My modifications from the original:
 -----------
 - hardware pushbutton to change mode on the fly (was dip switches)
 - portability - original is fragile and high-voltage
@@ -76,4 +76,4 @@ Things I might need to make a zero work:
 - 40 pin header to solder on https://www.adafruit.com/products/2822 ($1) or just individual jumper wires
 - 
  
-Zero might not end up being cheap, and more work to set up so not as good for students.
+Zero might not end up being cheap ( b/c of all the parts needed to add from the basic Pi), and more work to set up so not as good for students.
