@@ -12,7 +12,7 @@ My Zetalink Four Letter Word has been running nearly 24/7/365 for more than 10 y
 
 
 Adafruit Quad Alphanumeric Display - Red 0.54" Digits w/ I2C Backpack 
-- https://www.adafruit.com/products/1911
+- https://www.adafruit.com/products/1911  ($10)
 - http://www.amazon.com/dp/B00L2X4JEW/ref=cm_sw_r_tw_dp_c4ZIwb0SV9F0G (Ah, Amazon Prime)
 
 - https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/overview
