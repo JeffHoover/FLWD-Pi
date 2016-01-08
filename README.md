@@ -11,9 +11,6 @@ Video showing original segment-based hangman mode:
 https://www.youtube.com/watch?v=1UGYAl4RTpc
 
 
-My Zetalink Four Letter Word has been running nearly 24/7/365 for more than 10 years.
------------
-
 The display board I used:
 -----------
 Adafruit Quad Alphanumeric Display - Red 0.54" Digits w/ I2C Backpack 
