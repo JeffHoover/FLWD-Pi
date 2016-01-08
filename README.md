@@ -22,10 +22,14 @@ Adafruit Quad Alphanumeric Display - Red 0.54" Digits w/ I2C Backpack
 - https://learn.adafruit.com/adafruit-led-backpack/changing-i2c-address
 - https://www.adafruit.com/datasheets/CID2379.pdf
 
+Trello board for backlog:
+https://trello.com/b/GAjtxf5i/flwd-pi
+
 Pi-related things I've had to learn for this project:
 -----------
 - Driving an LED
 - Reading hardware switches
+- displaying words on the adafruit
 - Trapping ctrl-c to shut down GPIO politely as program ends.
 - Python
 - Breaking python into multiple files (via import)
@@ -34,9 +38,14 @@ Pi-related things I've had to learn for this project:
 - Python program command-line args
 - ssh'ing into the Pi via wifi
 - Transferring files between Mac and Pi (via rsync)
+- Shell out to turn off system LED(s) then shell out to turn back on just before exiting
 
-Trello board for backlog:
-https://trello.com/b/GAjtxf5i/flwd-pi
+Other skills needed for someone to reproduce what I did:
+------------
+- basic breadboarding
+- unix commands
+- git
+
 
 
  
