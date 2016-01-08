@@ -1,7 +1,7 @@
 # FLWD-Pi
 
 My inspiration:
-
+-----------
 - http://pbxbook.com/clocks/B7971_flw.html (has video of startup message)
 - http://www.oocities.org/tokyo/8908/fourletterword/index.html
 - http://pbxbook.com/clocks/pdf/FLW-UM-2.5.pdf
