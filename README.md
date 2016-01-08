@@ -23,6 +23,7 @@ Adafruit Quad Alphanumeric Display - Red 0.54" Digits w/ I2C Backpack
 - https://www.adafruit.com/datasheets/CID2379.pdf
 
 Trello board for backlog:
+-----------
 https://trello.com/b/GAjtxf5i/flwd-pi
 
 Pi-related things I've had to learn for this project:
