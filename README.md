@@ -2,13 +2,17 @@
 
 My inspiration:
 
-- http://pbxbook.com/clocks/B7971_flw.html
+- http://pbxbook.com/clocks/B7971_flw.html (has video of startup message)
 - http://www.oocities.org/tokyo/8908/fourletterword/index.html
 - http://pbxbook.com/clocks/pdf/FLW-UM-2.5.pdf
 
+Video showing original segment-based hangman mode:
+-----------
 https://www.youtube.com/watch?v=1UGYAl4RTpc
 
+
 My Zetalink Four Letter Word has been running nearly 24/7/365 for more than 10 years.
+-----------
 
 
 Adafruit Quad Alphanumeric Display - Red 0.54" Digits w/ I2C Backpack 
@@ -30,6 +34,7 @@ Things I added from the original:
 -----------
 - hardware pushbutton to change mode on the fly (was dip switches)
 - portability - original is fragile and high-voltage
+- command-line flag to skip startup message
 
 Pi-related things I've had to learn for this project:
 -----------
