@@ -90,6 +90,8 @@ def display_word(word):
 def display_startup_message():
     for start_word in words.startup_message:
         display_word(start_word)
+        if RPi.GPIO.input(SWITCH_GPIO_PIN) == RPi.GPIO.LOW:
+            return
         time.sleep(1)
 
 setup_GPIO()
