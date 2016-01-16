@@ -86,6 +86,10 @@ def get_word_based_on_offense_level(offense_level):
     get_word = function_chooser.get(offense_level, lambda:get_clean_word())
     return get_word
 
+def take_picture():
+    camera.capture('image.jpg')
+    photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
+    return api.upload_media(media=photo)
 
 def display_word(word):
     display.print_str(word)
@@ -94,7 +98,7 @@ def display_word(word):
 
     camera.capture('image.jpg')
     photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
-    response = api.upload_media(media=photo)
+    response = take_picture()
     api.update_status(status = word, media_ids=[response['media_id']])
 
     time.sleep(1)
