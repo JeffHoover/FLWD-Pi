@@ -92,17 +92,10 @@ def display_word(word):
     display.write_display()
     print(word)
 
-#    try:
+    camera.capture('image.jpg')
     photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
     response = api.upload_media(media=photo)
-    api.update_status(status= word + 'Checkout this cool image!', media_ids=[response['media_id']])
-#        photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
-#        response = twitter.upload_media(media=photo)
-#        api.update_status(status= word + 'Checkout this cool image!', media_ids=[response['media_id']])
-#    except:
-#        print("failed to tweet pic")
-#        pass
-
+    api.update_status(status = word, media_ids=[response['media_id']])
 
     time.sleep(1)
 
@@ -120,7 +113,6 @@ random.seed()
 if len(sys.argv) == 1:
     display_startup_message()
 
-camera.capture('image.jpg')
 
 while True:
     word = get_word_based_on_offense_level(offense_level)
