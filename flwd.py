@@ -1,18 +1,21 @@
-import picamera
+import os
+import sys
 import random
 import time
-import RPi.GPIO
-import words
 import signal
-import os
-from twython import Twython
-import twitter_auth
-import sys
+
+import RPi.GPIO as GPIO
+import picamera
 from Adafruit_LED_Backpack import AlphaNum4
+from twython import Twython
+
+# My python files:
+import words
+import twitter_auth
 
 def setup_GPIO():
-    RPi.GPIO.setmode(RPi.GPIO.BCM)
-    RPi.GPIO.setup(SWITCH_GPIO_PIN, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(SWITCH_GPIO_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
     os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
@@ -22,7 +25,7 @@ def signal_handler(signal, frame):
         print('\nCleaning up GPIO and exiting.')
         display.clear()
         display.write_display()
-        RPi.GPIO.cleanup();
+        GPIO.cleanup();
         os.system('echo 1 | sudo tee /sys/class/leds/led1/brightness')
         sys.exit(0)
 
@@ -34,7 +37,7 @@ def take_picture():
 
 
 def update_offense_level_from_switch(word, offense_level):
-    if RPi.GPIO.input(SWITCH_GPIO_PIN) == RPi.GPIO.LOW:
+    if GPIO.input(SWITCH_GPIO_PIN) == GPIO.LOW:
         if offense_level <= 4:    
             offense_level += 1
         word = "   " + str(offense_level)
@@ -88,9 +91,9 @@ def display_word(word):
 def display_startup_message():
     for start_word in words.startup_message:
         display_word_no_tweet(start_word)
-        if RPi.GPIO.input(SWITCH_GPIO_PIN) == RPi.GPIO.LOW:
+        if GPIO.input(SWITCH_GPIO_PIN) == GPIO.LOW:
             return
-        time.sleep(0.9)
+        time.sleep(0.8)
 
 # app starts here
 #---------------------------
