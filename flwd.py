@@ -79,14 +79,18 @@ def display_word_no_tweet(word):
     display.print_str(word)
     display.write_display()
     print(word)
-    time.sleep(1)
+    time.sleep(0.8)
 
 
 def display_word(word):
     display_word_no_tweet(word)
-    response = take_picture()
-    twitter.update_status(status = word, media_ids=[response['media_id']])
-
+    try:
+        response = take_picture()
+        twitter.update_status(status = word, media_ids=[response['media_id']])
+    except:
+       # Chances are that we won't ever see this, as it's probably running w/o wifi
+       # and we won't be ssh'ed into the pi.
+       print("take_picture or update_status failed.") 
 
 def display_startup_message():
     for start_word in words.startup_message:
