@@ -10,7 +10,14 @@ import twitter_auth
 import sys
 from Adafruit_LED_Backpack import AlphaNum4
 
+def setup_GPIO():
+    RPi.GPIO.setmode(RPi.GPIO.BCM)
+    RPi.GPIO.setup(SWITCH_GPIO_PIN, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
+    os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
+    os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
+
+# declare a callback to be called on ctrl-c to clean up hardware and leave display blank
 def signal_handler(signal, frame):
         print('\nCleaning up GPIO and exiting.')
         display.clear()
@@ -20,29 +27,10 @@ def signal_handler(signal, frame):
         sys.exit(0)
 
 
-signal.signal(signal.SIGINT, signal_handler)
-
-camera = picamera.PiCamera()
-
-api = Twython(twitter_auth.apiKey,twitter_auth.apiSecret,twitter_auth.accessToken,twitter_auth.accessTokenSecret)
-
-sys.stderr = open('stderr.txt', 'w')
-# assigning stderr above captures these annoying (but ignorable) errors:
-#flwd.py:43: RuntimeWarning: A physical pull up resistor is fitted on this channel!
-#  RPi.GPIO.setup(12 RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
-
-## Create display instance on default I2C address (0x70) and bus number.
-display = AlphaNum4.AlphaNum4()
-
-## Init the display. Must be called once before using the display.
-display.begin()
-display.clear()
-
-offense_level = 0
-cleaner_button = 0
-dirtier_button = 0 
-word = "init"
-SWITCH_GPIO_PIN = 12
+def take_picture():
+    camera.capture('image.jpg')
+    photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
+    return twitter.upload_media(media=photo)
 
 
 def update_offense_level_from_switch(word, offense_level):
@@ -51,13 +39,6 @@ def update_offense_level_from_switch(word, offense_level):
             offense_level += 1
         word = "   " + str(offense_level)
     return word
-
-
-def setup_GPIO():
-    RPi.GPIO.setmode(RPi.GPIO.BCM)
-    RPi.GPIO.setup(SWITCH_GPIO_PIN, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_UP)
-    os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
-    os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
 
 def get_offensive_word():
@@ -91,12 +72,6 @@ def get_word_based_on_offense_level(offense_level):
     return get_word
 
 
-def take_picture():
-    camera.capture('image.jpg')
-    photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
-    return api.upload_media(media=photo)
-
-
 def display_word_no_tweet(word):
     display.print_str(word)
     display.write_display()
@@ -107,7 +82,7 @@ def display_word_no_tweet(word):
 def display_word(word):
     display_word_no_tweet(word)
     response = take_picture()
-    api.update_status(status = word, media_ids=[response['media_id']])
+    twitter.update_status(status = word, media_ids=[response['media_id']])
 
 
 def display_startup_message():
@@ -117,6 +92,32 @@ def display_startup_message():
             return
         time.sleep(0.9)
 
+# app starts here
+#---------------------------
+
+
+offense_level = 0
+cleaner_button = 0
+dirtier_button = 0 
+word = "init"
+SWITCH_GPIO_PIN = 12
+
+#initialize the ctrl-c callback
+signal.signal(signal.SIGINT, signal_handler)
+
+camera = picamera.PiCamera()
+
+twitter = Twython(twitter_auth.apiKey,twitter_auth.apiSecret,twitter_auth.accessToken,twitter_auth.accessTokenSecret)
+
+# assign stderr to capture annoying (but ignorable) pull-up resistor errors:
+sys.stderr = open('stderr.txt', 'w')
+
+# Create display instance on default I2C address (0x70) and bus number.
+display = AlphaNum4.AlphaNum4()
+
+# Init the display. Must be called once before using the display.
+display.begin()
+display.clear()
 
 setup_GPIO()
 
@@ -125,6 +126,8 @@ random.seed()
 if len(sys.argv) == 1:
     display_startup_message()
 
+# Main Loop:
+#------------
 while True:
     word = get_word_based_on_offense_level(offense_level)
     word = update_offense_level_from_switch(word, offense_level)
@@ -136,4 +139,5 @@ while True:
             word = "   0"
 
     display_word(word)
+
 
