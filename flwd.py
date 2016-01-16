@@ -10,6 +10,7 @@ import twitter_auth
 import sys
 from Adafruit_LED_Backpack import AlphaNum4
 
+
 def signal_handler(signal, frame):
         print('\nCleaning up GPIO and exiting.')
         display.clear()
@@ -17,6 +18,7 @@ def signal_handler(signal, frame):
         RPi.GPIO.cleanup();
         os.system('echo 1 | sudo tee /sys/class/leds/led1/brightness')
         sys.exit(0)
+
 
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -42,13 +44,14 @@ dirtier_button = 0
 word = "init"
 SWITCH_GPIO_PIN = 12
 
-def update_offense_level_from_switch(word, offense_level):
 
+def update_offense_level_from_switch(word, offense_level):
     if RPi.GPIO.input(SWITCH_GPIO_PIN) == RPi.GPIO.LOW:
         if offense_level <= 4:    
             offense_level += 1
         word = "   " + str(offense_level)
     return word
+
 
 def setup_GPIO():
     RPi.GPIO.setmode(RPi.GPIO.BCM)
@@ -56,8 +59,6 @@ def setup_GPIO():
     os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
     os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
-def print_throwing_away (word):
-    print ("Throwing away: " + word)
 
 def get_offensive_word():
     word = "okok"
@@ -65,15 +66,18 @@ def get_offensive_word():
         word = random.choice(words.words)
     return word
 
+
 def get_clean_word():
     word = "*"
     while word.endswith("*"):
         word = random.choice(words.words)
     return word
 
+
 def get_random_word():
     word = random.choice(words.words)
     return word
+
 
 def get_word_based_on_offense_level(offense_level):
     function_chooser = {
@@ -86,29 +90,33 @@ def get_word_based_on_offense_level(offense_level):
     get_word = function_chooser.get(offense_level, lambda:get_clean_word())
     return get_word
 
+
 def take_picture():
     camera.capture('image.jpg')
     photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
     return api.upload_media(media=photo)
 
-def display_word(word):
+
+def display_word_no_tweet(word):
     display.print_str(word)
     display.write_display()
     print(word)
+    time.sleep(1)
 
-    camera.capture('image.jpg')
-    photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
+
+def display_word(word):
+    display_word_no_tweet(word)
     response = take_picture()
     api.update_status(status = word, media_ids=[response['media_id']])
 
-    time.sleep(1)
 
 def display_startup_message():
     for start_word in words.startup_message:
-        display_word(start_word)
+        display_word_no_tweet(start_word)
         if RPi.GPIO.input(SWITCH_GPIO_PIN) == RPi.GPIO.LOW:
             return
         time.sleep(0.9)
+
 
 setup_GPIO()
 
@@ -116,7 +124,6 @@ random.seed()
 
 if len(sys.argv) == 1:
     display_startup_message()
-
 
 while True:
     word = get_word_based_on_offense_level(offense_level)
