@@ -1,9 +1,14 @@
+import picamera
 import random
 import time
 import RPi.GPIO
 import words
 import signal
 import os
+from twython import Twython
+import twitter_auth
+import sys
+from Adafruit_LED_Backpack import AlphaNum4
 
 def signal_handler(signal, frame):
         print('\nCleaning up GPIO and exiting.')
@@ -15,8 +20,9 @@ def signal_handler(signal, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-from Adafruit_LED_Backpack import AlphaNum4
-import sys
+camera = picamera.PiCamera()
+
+api = Twython(twitter_auth.apiKey,twitter_auth.apiSecret,twitter_auth.accessToken,twitter_auth.accessTokenSecret)
 
 sys.stderr = open('stderr.txt', 'w')
 # assigning stderr above captures these annoying (but ignorable) errors:
@@ -85,6 +91,19 @@ def display_word(word):
     display.print_str(word)
     display.write_display()
     print(word)
+
+#    try:
+    photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
+    response = api.upload_media(media=photo)
+    api.update_status(status= word + 'Checkout this cool image!', media_ids=[response['media_id']])
+#        photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
+#        response = twitter.upload_media(media=photo)
+#        api.update_status(status= word + 'Checkout this cool image!', media_ids=[response['media_id']])
+#    except:
+#        print("failed to tweet pic")
+#        pass
+
+
     time.sleep(1)
 
 def display_startup_message():
@@ -92,12 +111,16 @@ def display_startup_message():
         display_word(start_word)
         if RPi.GPIO.input(SWITCH_GPIO_PIN) == RPi.GPIO.LOW:
             return
-        time.sleep(1)
+        time.sleep(0.9)
 
 setup_GPIO()
 
+random.seed()
+
 if len(sys.argv) == 1:
     display_startup_message()
+
+camera.capture('image.jpg')
 
 while True:
     word = get_word_based_on_offense_level(offense_level)
