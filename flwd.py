@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import sys
 import random
@@ -95,8 +96,16 @@ def display_word(word):
 
        photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
        response = twitter.upload_media(media=photo)
-       twitter.update_status(status = word + ' - Camera offline, tweeting previous image.', media_ids=[response['media_id']])
-       print("take_picture or update_status failed - tweeting last picture.") 
+       try: 
+           twitter.update_status(status = word + ' - Camera offline, tweeting previous image.', media_ids=[response['media_id']])
+           print("take_picture or update_status failed - tweeting last picture.")
+
+           # Throttle non-image-capture tweeting by waiting a minute:
+           time.sleep(60);
+       except:
+           msg = "Twitter exception: are you over daily status update limit?"
+           print(msg)
+           print(msg, file=sys.stderr)
 
 def display_startup_message():
     for start_word in words.startup_message:
