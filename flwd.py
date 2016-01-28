@@ -30,7 +30,7 @@ def signal_handler(signal, frame):
         sys.exit(0)
 
 
-def take_picture():
+def take_picture(camera):
     camera.capture('image.jpg')
     photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
     return twitter.upload_media(media=photo)
@@ -85,12 +85,18 @@ def display_word_no_tweet(word):
 def display_word(word):
     display_word_no_tweet(word)
     try:
-        response = take_picture()
-        twitter.update_status(status = word, media_ids=[response['media_id']])
+        with PiCamera() as camera:
+            response = take_picture(camera)
+            twitter.update_status(status = word, media_ids=[response['media_id']])
+            pass
     except:
        # Chances are that we won't ever see this, as it's probably running w/o wifi
        # and we won't be ssh'ed into the pi.
-       print("take_picture or update_status failed.") 
+
+       photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
+       response = twitter.upload_media(media=photo)
+       twitter.update_status(status = word + ' - Camera offline, tweeting previous image.', media_ids=[response['media_id']])
+       print("take_picture or update_status failed - tweeting last picture.") 
 
 def display_startup_message():
     for start_word in words.startup_message:
@@ -112,10 +118,6 @@ SWITCH_GPIO_PIN = 12
 #initialize the ctrl-c callback
 signal.signal(signal.SIGINT, signal_handler)
 
-camera = picamera.PiCamera()
-
-twitter = Twython(twitter_auth.apiKey,twitter_auth.apiSecret,twitter_auth.accessToken,twitter_auth.accessTokenSecret)
-
 # assign stderr to capture annoying (but ignorable) pull-up resistor errors:
 sys.stderr = open('stderr.txt', 'w')
 
@@ -127,6 +129,8 @@ display.begin()
 display.clear()
 
 setup_GPIO()
+
+twitter = Twython(twitter_auth.apiKey,twitter_auth.apiSecret,twitter_auth.accessToken,twitter_auth.accessTokenSecret)
 
 random.seed()
 
