@@ -17,10 +17,13 @@ def setup_GPIO():
     os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
     os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
+f = open('output.log', 'w')
+
 
 # declare a callback to be called on ctrl-c to clean up hardware and leave display blank
 def signal_handler(signal, frame):
         print('\nCleaning up GPIO and exiting.')
+        f.close()
         display.clear()
         display.write_display()
         GPIO.cleanup();
@@ -63,6 +66,7 @@ def display_word(word):
     display.print_str(word)
     display.write_display()
     print(word)
+    f.write(word+'\n')
     time.sleep(0.8)
 
 
