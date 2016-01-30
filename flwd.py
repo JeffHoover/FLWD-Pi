@@ -6,17 +6,14 @@ import time
 import signal
 
 import RPi.GPIO as GPIO
-import picamera
 from Adafruit_LED_Backpack import AlphaNum4
-from twython import Twython
 
 # My python files:
 import words
-import twitter_auth
+
 
 def setup_GPIO():
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(SWITCH_GPIO_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
     os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
@@ -29,20 +26,6 @@ def signal_handler(signal, frame):
         GPIO.cleanup();
         os.system('echo 1 | sudo tee /sys/class/leds/led1/brightness')
         sys.exit(0)
-
-
-def take_picture(camera):
-    camera.capture('image.jpg')
-    photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
-    return twitter.upload_media(media=photo)
-
-
-def update_offense_level_from_switch(word, offense_level):
-    if GPIO.input(SWITCH_GPIO_PIN) == GPIO.LOW:
-        if offense_level <= 4:    
-            offense_level += 1
-        word = "   " + str(offense_level)
-    return word
 
 
 def get_offensive_word():
@@ -76,58 +59,30 @@ def get_word_based_on_offense_level(offense_level):
     return get_word
 
 
-def display_word_no_tweet(word):
+def display_word(word):
     display.print_str(word)
     display.write_display()
     print(word)
     time.sleep(0.8)
 
 
-def display_word(word):
-    display_word_no_tweet(word)
-    try:
-        with PiCamera() as camera:
-            response = take_picture(camera)
-            twitter.update_status(status = word, media_ids=[response['media_id']])
-            pass
-    except:
-       # Chances are that we won't ever see this, as it's probably running w/o wifi
-       # and we won't be ssh'ed into the pi.
-
-       photo = open('/home/pi/projects/FLWD-Pi/image.jpg', 'rb')
-       response = twitter.upload_media(media=photo)
-       try: 
-           twitter.update_status(status = word + ' - Camera offline, tweeting previous image.', media_ids=[response['media_id']])
-           print("take_picture or update_status failed - tweeting last picture.")
-
-           # Throttle non-image-capture tweeting by waiting a minute:
-           time.sleep(60);
-       except:
-           msg = "Twitter exception: are you over daily status update limit?"
-           print(msg)
-           print(msg, file=sys.stderr)
-
 def display_startup_message():
     for start_word in words.startup_message:
-        display_word_no_tweet(start_word)
-        if GPIO.input(SWITCH_GPIO_PIN) == GPIO.LOW:
-            return
-        time.sleep(0.8)
+        display_word(start_word)
+        time.sleep(0.7)
+
 
 # app starts here
 #---------------------------
 
 
-offense_level = 0
-cleaner_button = 0
-dirtier_button = 0 
+offense_level = 2
 word = "init"
-SWITCH_GPIO_PIN = 12
 
 #initialize the ctrl-c callback
 signal.signal(signal.SIGINT, signal_handler)
 
-# assign stderr to capture annoying (but ignorable) pull-up resistor errors:
+# assign stderr to capture any errors
 sys.stderr = open('stderr.txt', 'w')
 
 # Create display instance on default I2C address (0x70) and bus number.
@@ -139,8 +94,6 @@ display.clear()
 
 setup_GPIO()
 
-twitter = Twython(twitter_auth.apiKey,twitter_auth.apiSecret,twitter_auth.accessToken,twitter_auth.accessTokenSecret)
-
 random.seed()
 
 if len(sys.argv) == 1:
@@ -150,14 +103,6 @@ if len(sys.argv) == 1:
 #------------
 while True:
     word = get_word_based_on_offense_level(offense_level)
-    word = update_offense_level_from_switch(word, offense_level)
-    if word.startswith(" "):
-        new_offense_level = word[3:]
-        offense_level = int(new_offense_level)
-        if offense_level > 4:
-            offense_level = 0
-            word = "   0"
-
     display_word(word)
 
 
