@@ -615,7 +615,6 @@ cony
 coof
 cook
 cool
-coon
 coop
 coos
 coot
@@ -700,7 +699,6 @@ dado
 dads
 daff
 daft
-dago
 dags
 dahl
 dahs
@@ -793,7 +791,6 @@ diet
 diff
 difs
 digs
-dike
 dill
 dime
 dims
@@ -930,7 +927,6 @@ dyad
 dyed
 dyer
 dyes
-dyke
 dyne
 each
 earl
@@ -1365,7 +1361,6 @@ gone
 gong
 good
 goof
-gook
 goon
 goop
 goos
@@ -1830,7 +1825,6 @@ kids
 kief
 kier
 kifs
-kike
 kill
 kiln
 kilo
@@ -2209,7 +2203,6 @@ mhos
 mibs
 mica
 mice
-mick
 mics
 midi
 mids
