@@ -1,4 +1,4 @@
-The code for all the the 4 letters backback is at:
+ll the the 4 letters backback is at:
 
 /home/pi/projects/Adafruit_Python_LED_Backpack
 
@@ -6,4 +6,47 @@ https://learn.adafruit.com/adafruit-led-backpack/0-54-alphanumeric
 https://learn.adafruit.com/led-backpack-displays-on-raspberry-pi-and-beaglebone-black/usage
 https://learn.adafruit.com/adafruit-led-backpack/changing-i2c-address
 
+------------------------
+
+sudo apt-get install rpi-update
+sudo rpi-update
+sudo reboot
+
+sudo apt-get update
+sudo apt-get –y upgrade (-y not recognized as arg. Take out)
+sudo reboot
+
+sudo raspi-config
+
+
+This update bumps to rpi-4.4.y linux tree
+Be aware there could be compatibility issues with some drivers
+Discussion here:
+https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=144087
+
+sudo apt-get install build-essential python-dev
+
+http://www.instructables.com/id/Raspberry-Pi-Launch-Python-script-on-startup/
+-----------------------------
+import RPi.GPIO as GPIO
+import picamera
+from Adafruit_LED_Backpack import AlphaNum4
+from twython import Twython
+
+# My python files:
+import words
+import twitter_auth
+-------------------
+
+To fix: "ping: icmp open socket: Operation not permitted"
+sudo chmod u+s /bin/ping
+
+
+SError: [Errno 5] Input/output error
+You get that error message when you try and address a device that is not there. So use print statements before the offending statement to see what value of the address you are using.
+
+-----------------
+
+For camera/tweet to work, need a "fallback" image at:
+/home/pi/projects/FLWD-Pi/image.jpg
 
