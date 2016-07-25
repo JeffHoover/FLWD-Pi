@@ -12,17 +12,14 @@ import words
 
 def setup_GPIO():
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(SWITCH_GPIO_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     os.system('echo gpio | sudo tee /sys/class/leds/led1/trigger')
     os.system('echo 0 | sudo tee /sys/class/leds/led1/brightness')
 
-
 # declare a callback to be called on ctrl-c to clean up hardware and leave display blank
 def signal_handler(signal, frame):
-        print('\nCleaning up GPIO and exiting.')
+        print('\nCleaning up display and leds, and exiting.')
         display.clear()
         display.write_display()
-        GPIO.cleanup();
         os.system('echo 1 | sudo tee /sys/class/leds/led1/brightness')
         sys.exit(0)
 
